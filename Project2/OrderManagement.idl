@@ -1,0 +1,22 @@
+module OrderManagementApp {
+  struct Order {
+    string username;
+    long chickenQty;
+    long colaQty;
+    double totalPrice;
+  };
+
+  typedef sequence<Order> OrderList;
+
+  exception InvalidOrder {
+    string message;
+  };
+
+  interface OrderManagement {
+    string viewMenu();
+    string placeOrder(in string username, in long chickenQty, in long colaQty) raises (InvalidOrder);
+    Order checkOrderStatus(in string username) raises (InvalidOrder);
+
+    OrderList viewCurrentOrders();
+  };
+};

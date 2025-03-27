@@ -1,0 +1,95 @@
+CprE 4500/5500 – Project 2
+
+Distributed Order Management System (CORBA)
+
+Author: Adin Huric
+
+Date: March 2025
+
+I. Overview
+
+This project implements a basic version of a Distributed Order Management System using CORBA. The system provides functionalities for customers to view a menu, place an order, and check their order 
+status while a manager can view all current orders. All order information is stored in the server's memory so multiple clients can connect at the same time and interact with the system. 
+This project is done in Java and remote interfaces are defined using CORBA IDL.
+
+II. System Architecture
+
+The system is composed of three distinct subsystems:
+
+IDL File (OrderManagement.idl):
+Provides the interface for the customer and manager functionalities as a CORBA object.
+
+Contains an Order struct and a typedef for Order array.
+
+Contains an InvalidOrder exception.
+
+Server (Server.java):
+Provides an implementation for the CORBA OrderManagement interface using OrderManagementPOA.
+
+Keeps orders in memory using a HashMap<String, Order>.
+
+Registers the CORBA object to the NameService so clients can find it.
+
+Serves multiple users using the system ensuring that customers and managers are given proper access to their roles.
+
+Client (Client.java):
+Connects to NameService and remotely accesses OrderManagement object.
+
+Receives input from a user either as a customer or a manager.
+
+Customers have the ability to:
+
+Look through the list of items available
+Make a singular order
+View the status of the order placed under their username.
+Managers are allowed to:
+
+Check and monitor all the orders made by different customers.
+III. Important Design Considerations
+
+To maintain system simplicity and adherence to specification and requirements of the project, only one CORBA interface was implemented.
+
+Removed persistence complications by storing order information in the systems memory.
+
+Changed configuration of the systems to have menu driven interaction for easier testing and better demonstration of the user cases.
+
+IV. Control of Known Problems
+
+Changes to the system were done with the assumption of handling:
+
+Negatives quantities of orders
+
+Invalid or duplicated usernames
+
+Nonexistent orders
+
+System errors are handled and generated messages that aid the user with instruction.
+
+V. Test Cases & Measurements
+
+1. Multiple Concurrent Clients
+
+Started three concurrent clients.
+
+All apart placed different orders.
+
+All current orders could be viewed by the manager.
+
+2. Client Restart
+
+One client placed an order.
+
+I reopened the client, clicked on "check order status," and obtained the right information.
+
+3. Incorrect Data Submission
+
+Orders with negative quantities → threw InvalidOrder exception.
+
+Repeated username → threw InvalidOrder.
+
+Username not found during verification → exception was raised as expected.
+
+VI. Conclusion
+
+This system is CORBA-based and fulfills relevant requirements of the project by enabling many customers to interact with a single order management server that is managed by a single manager. 
+It also shows implementation with distinct separation of roles, managing functional errors, and communication throughout the system using CORBA.
